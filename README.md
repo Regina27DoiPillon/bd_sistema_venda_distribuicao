@@ -5,6 +5,7 @@ Banco de Dados sobre Sistema de Vendas e Distribuição.
 # Workbench:
 ## Criação das tabelas e configuração:
 
+### Padronização:
 ````
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -12,6 +13,10 @@ SET time_zone = "+00:00";
 
 create database if not exists sistema_venda_distribuicao;
 use sistema_venda_distribuicao;
+
+````
+### Paízes:
+````
 
 CREATE TABLE IF NOT EXISTS `countries` (
   `COUNTRY_ID` varchar(2) NOT NULL,
@@ -47,6 +52,10 @@ INSERT INTO `countries` (`COUNTRY_ID`, `COUNTRY_NAME`, `REGION_ID`) VALUES
 ('US', 'United States of America', '2'),
 ('ZM', 'Zambia', '4'),
 ('ZW', 'Zimbabwe', '4');
+
+````
+### Departamentos:
+````
 
 CREATE TABLE IF NOT EXISTS `departments` (
   `DEPARTMENT_ID` decimal(4,0) NOT NULL DEFAULT '0',
@@ -86,6 +95,10 @@ INSERT INTO `departments` (`DEPARTMENT_ID`, `DEPARTMENT_NAME`, `MANAGER_ID`, `LO
 ('250', 'Retail Sales', '0', '1700'),
 ('260', 'Recruiting', '0', '1700'),
 ('270', 'Payroll', '0', '1700');
+
+````
+### Funcionários:
+````
 
 CREATE TABLE IF NOT EXISTS `employees` (
   `EMPLOYEE_ID` decimal(6,0) NOT NULL DEFAULT '0',
@@ -216,6 +229,10 @@ INSERT INTO `employees` (`EMPLOYEE_ID`, `FIRST_NAME`, `LAST_NAME`, `EMAIL`, `PHO
 ('205', 'Shelley', 'Higgins', 'SHIGGINS', '515.123.8080', '1987-09-30', 'AC_MGR', '12000.00', '0.00', '101', '110'),
 ('206', 'William', 'Gietz', 'WGIETZ', '515.123.8181', '1987-10-01', 'AC_ACCOUNT', '8300.00', '0.00', '205', '110');
 
+````
+### Histórico de cargo:
+````
+
 CREATE TABLE IF NOT EXISTS `job_history` (
   `EMPLOYEE_ID` decimal(6,0) NOT NULL,
   `START_DATE` date NOT NULL,
@@ -240,6 +257,10 @@ INSERT INTO `job_history` (`EMPLOYEE_ID`, `START_DATE`, `END_DATE`, `JOB_ID`, `D
 ('176', '1999-01-01', '1999-12-31', 'SA_MAN', '80'),
 ('200', '1994-07-01', '1998-12-31', 'AC_ACCOUNT', '90'),
 ('0', '0000-00-00', '0000-00-00', '', '0');
+
+````
+### Cargos:
+````
 
 CREATE TABLE IF NOT EXISTS `jobs` (
   `JOB_ID` varchar(10) NOT NULL DEFAULT '',
@@ -269,6 +290,10 @@ INSERT INTO `jobs` (`JOB_ID`, `JOB_TITLE`, `MIN_SALARY`, `MAX_SALARY`) VALUES
 ('MK_REP', 'Marketing Representative', '4000', '9000'),
 ('HR_REP', 'Human Resources Representative', '4000', '9000'),
 ('PR_REP', 'Public Relations Representative', '4500', '10500');
+
+````
+### Localização:
+````
 
 CREATE TABLE IF NOT EXISTS `locations` (
   `LOCATION_ID` decimal(4,0) NOT NULL DEFAULT '0',
@@ -307,6 +332,10 @@ INSERT INTO `locations` (`LOCATION_ID`, `STREET_ADDRESS`, `POSTAL_CODE`, `CITY`,
 ('3000', 'Murtenstrasse 921', '3095', 'Bern', 'BE', 'CH'),
 ('3100', 'Pieter Breughelstraat 837', '3029SK', 'Utrecht', 'Utrecht', 'NL'),
 ('3200', 'Mariano Escobedo 9991', '11932', 'Mexico City', '"Distrito Federal', '"');
+
+````
+### Regiões:
+````
 
 CREATE TABLE IF NOT EXISTS `regions` (
   `REGION_ID` decimal(5,0) NOT NULL,
