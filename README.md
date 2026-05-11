@@ -5,6 +5,11 @@ Banco de Dados sobre Sistema de Vendas e Distribuição.
 # Workbench:
 ## Criação das tabelas e configuração:
 
+````
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 create database if not exists sistema_venda_distribuicao;
 use sistema_venda_distribuicao;
 
@@ -315,3 +320,5 @@ INSERT INTO `regions` (`REGION_ID`, `REGION_NAME`) VALUES
 ('2', 'Americas\r'),
 ('3', 'Asia\r'),
 ('4', 'Middle East and Africa\r');
+
+````
