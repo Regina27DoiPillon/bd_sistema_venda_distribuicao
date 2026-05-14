@@ -3663,4 +3663,41 @@ ADD CONSTRAINT `FK_Territories_Region`
 FOREIGN KEY (`RegionID`) REFERENCES `Region` (`RegionID`);
 
 ````
+### Algumas inserções para os exercícios funcionarem:
+````
+use wrpracti_northwind;
+INSERT INTO `Orders` (`OrderID`, `CustomerID`, `EmployeeID`, `OrderDate`, `RequiredDate`, `ShippedDate`, `ShipVia`, `Freight`, `ShipName`, `ShipAddress`, `ShipCity`, `ShipRegion`, `ShipPostalCode`, `ShipCountry`) VALUES
+(10101, 'VINET', 5, '1996-07-04 00:00:00', '1996-08-01 00:00:00', '1996-07-16 00:00:00', 3, '32.3800', 'Vins et alcools Chevalier', '59 rue de l-Abbaye', 'Reims', NULL, '51100', 'France');
 
+INSERT INTO `OrderDetails` (`OrderID`, `ProductID`, `UnitPrice`, `Quantity`, `Discount`) VALUES
+(10101, 11, '14.0000', 12, 10);
+
+````
+
+## Exercícios:
+### Atividade 1 — Function para calcular valor total do pedido
+````
+
+DELIMITER $$
+create function fn_total_pedido(preco_uni decimal(10,4), quant int)
+returns decimal (10,4)
+DETERMINISTIC 
+BEGIN
+	return (preco_uni * quant);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+create function fn_total_pedido_desconto(preco decimal(10,4), desconto double)
+returns decimal (10,4)
+DETERMINISTIC 
+BEGIN
+	return preco - preco*(desconto/100);
+END $$
+DELIMITER ;
+
+
+use wrpracti_northwind;
+select orderID, fn_total_pedido_desconto(fn_total_pedido(UnitPrice, Quantity), Discount) as preco_final_comDesconto from OrderDetails;
+
+````
