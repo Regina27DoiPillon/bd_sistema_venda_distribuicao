@@ -3675,6 +3675,7 @@ INSERT INTO `OrderDetails` (`OrderID`, `ProductID`, `UnitPrice`, `Quantity`, `Di
 ````
 
 ## Exercícios:
+
 ### Atividade 1 — Function para calcular valor total do pedido
 ````
 
@@ -3696,8 +3697,34 @@ BEGIN
 END $$
 DELIMITER ;
 
+````
+````
 
-use wrpracti_northwind;
 select orderID, fn_total_pedido_desconto(fn_total_pedido(UnitPrice, Quantity), Discount) as preco_final_comDesconto from OrderDetails;
+
+````
+
+### Atividade 2 — Function para verificar estoque
+````
+
+DELIMITER $$
+
+create function fn_verificar_estoque(qntdd int)
+returns varchar(250)
+deterministic
+begin
+if qntdd >= 10 then
+	return "ESTOQUE OK";
+else
+	return "ESTOQUE BAIXO";
+end if;
+end $$
+
+DELIMITER ;
+
+````
+````
+
+select ProductID, fn_verificar_estoque(UnitsInStock) as estado_estoque from Products;
 
 ````
