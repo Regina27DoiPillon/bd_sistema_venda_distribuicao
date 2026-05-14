@@ -3752,3 +3752,30 @@ DELIMITER ;
 select od.orderID, fn_frete_gratis(fn_total_pedido(od.UnitPrice, od.Quantity)) as tipo_frete from Orders o inner join OrderDetails od on o.orderID = od.orderID;
 
 ````
+
+### Atividade 5 — Function para Nível do Cliente
+````
+
+DELIMITER $$
+create function fn_nivel_cliente(num_compras int)
+returns varchar(250)
+deterministic
+begin
+if num_compras >=100000 then
+return "PREMIUM";
+elseif num_compras <100000 and num_compras >=5000 then
+return "GOLD";
+elseif num_compras <5000 and num_compras >=1000 then
+return "SILVER";
+else
+return "BRONZE";
+end if;
+end $$
+DELIMITER ;
+
+````
+````
+
+select c.CustomerID, fn_nivel_cliente(sum(od.Quantity)) as nivel_cliente from Customers c inner join Orders o on c.CustomerID = o.CustomerID inner join OrderDetails od on od.OrderID = o.OrderID group by c.CustomerID;
+
+````
