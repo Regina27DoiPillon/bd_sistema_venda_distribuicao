@@ -3728,3 +3728,27 @@ DELIMITER ;
 select ProductID, fn_verificar_estoque(UnitsInStock) as estado_estoque from Products;
 
 ````
+
+### Atividade 4 — Function para Calcular Frete Grátis
+````
+
+DELIMITER $$
+
+create function fn_frete_gratis(total_compra decimal (10,4))
+returns varchar(250)
+deterministic
+begin
+if total_compra >= 500 then
+return "FRETE GRÁTIS";
+else
+return "FRETE COBRADO";
+end if;
+end $$
+DELIMITER ;
+
+````
+````
+
+select od.orderID, fn_frete_gratis(fn_total_pedido(od.UnitPrice, od.Quantity)) as tipo_frete from Orders o inner join OrderDetails od on o.orderID = od.orderID;
+
+````
