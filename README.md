@@ -3700,7 +3700,10 @@ DELIMITER ;
 ````
 ````
 
-select orderID, fn_total_pedido_desconto(fn_total_pedido(UnitPrice, Quantity), Discount) as preco_final_comDesconto from OrderDetails;
+select
+orderID,
+fn_total_pedido_desconto(fn_total_pedido(UnitPrice, Quantity), Discount) as preco_final_comDesconto
+from OrderDetails;
 
 ````
 
@@ -3725,7 +3728,10 @@ DELIMITER ;
 ````
 ````
 
-select ProductID, fn_verificar_estoque(UnitsInStock) as estado_estoque from Products;
+select
+ProductID,
+fn_verificar_estoque(UnitsInStock) as estado_estoque
+from Products;
 
 ````
 ### Atividade 3 — Function para Categoria do Produto
@@ -3745,7 +3751,11 @@ DELIMITER ;
 ````
 ````
 
-select p.ProductID, fn_categoria_produto(p.ProductID) as categoria from Products p order by p.ProductID;
+select
+p.ProductID,
+fn_categoria_produto(p.ProductID) as categoria
+from Products p
+order by p.ProductID;
 
 ````
 ### Atividade 4 — Function para Calcular Frete Grátis
@@ -3768,7 +3778,12 @@ DELIMITER ;
 ````
 ````
 
-select od.orderID, fn_frete_gratis(fn_total_pedido(od.UnitPrice, od.Quantity)) as tipo_frete from Orders o inner join OrderDetails od on o.orderID = od.orderID;
+select
+od.orderID,
+fn_frete_gratis(fn_total_pedido(od.UnitPrice, od.Quantity)) as tipo_frete
+from Orders o
+inner join OrderDetails od
+on o.orderID = od.orderID;
 
 ````
 
@@ -3795,7 +3810,15 @@ DELIMITER ;
 ````
 ````
 
-select c.CustomerID, fn_nivel_cliente(sum(od.Quantity)) as nivel_cliente from Customers c inner join Orders o on c.CustomerID = o.CustomerID inner join OrderDetails od on od.OrderID = o.OrderID group by c.CustomerID;
+select
+c.CustomerID,
+fn_nivel_cliente(sum(od.Quantity)) as nivel_cliente
+from Customers c
+inner join Orders o
+on c.CustomerID = o.CustomerID
+inner join OrderDetails od
+on od.OrderID = o.OrderID
+group by c.CustomerID;
 
 ````
 ### Atividade 6 — Function para Tempo de Entrega
@@ -3812,16 +3835,37 @@ DELIMITER ;
 
 ````
 ````
-select OrderID, fn_tempo_entrega(RequiredDate, ShippedDate) as diasparaEntrega from Orders;
+select
+OrderID,
+fn_tempo_entrega(RequiredDate, ShippedDate) as diasparaEntrega
+from Orders;
 
 ````
 ### Atividade 7 — Dashboard SQL
 ````
 
-select o.OrderID as idPedido, c.ContactName as NomeComprador, fn_nivel_cliente(sum(od.Quantity)) as NivelCliente, p.ProductName as OquefoiPedido, 
-fn_total_pedido(od.UnitPrice, od.Quantity) as TotalPedido, fn_frete_gratis(fn_total_pedido(od.UnitPrice, od.Quantity)) as Frete, 
-fn_tempo_entrega(o.RequiredDate, o.ShippedDate) as DiasEntrega  from Orders o inner join Customers c on o.CustomerID = c.CustomerID inner join OrderDetails od
-on od.OrderID = o.OrderID inner join Products p on p.ProductID = od.ProductID group by o.OrderID, c.ContactName, p.ProductName, od.UnitPrice,
-od.Quantity, o.RequiredDate, o.ShippedDate;
+select
+o.OrderID as idPedido,
+c.ContactName as NomeComprador,
+fn_nivel_cliente(sum(od.Quantity)) as NivelCliente,
+p.ProductName as OquefoiPedido, 
+fn_total_pedido(od.UnitPrice, od.Quantity) as TotalPedido,
+fn_frete_gratis(fn_total_pedido(od.UnitPrice, od.Quantity)) as Frete, 
+fn_tempo_entrega(o.RequiredDate, o.ShippedDate) as DiasEntrega
+from Orders o
+inner join Customers c
+on o.CustomerID = c.CustomerID
+inner join OrderDetails od
+on od.OrderID = o.OrderID
+inner join Products p
+on p.ProductID = od.ProductID
+group by
+o.OrderID,
+c.ContactName,
+p.ProductName,
+od.UnitPrice,
+od.Quantity,
+o.RequiredDate,
+o.ShippedDate;
 
 ````
