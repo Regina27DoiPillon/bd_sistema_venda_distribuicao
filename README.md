@@ -3798,3 +3798,20 @@ DELIMITER ;
 select c.CustomerID, fn_nivel_cliente(sum(od.Quantity)) as nivel_cliente from Customers c inner join Orders o on c.CustomerID = o.CustomerID inner join OrderDetails od on od.OrderID = o.OrderID group by c.CustomerID;
 
 ````
+### Atividade 6 — Function para Tempo de Entrega
+````
+
+DELIMITER $$
+create function fn_tempo_entrega(prazodata datetime, saidaData datetime)
+returns int
+deterministic
+begin
+return datediff(prazodata , saidaData);
+end $$
+DELIMITER ;
+
+````
+````
+select OrderID, fn_tempo_entrega(RequiredDate, ShippedDate) as diasparaEntrega from Orders;
+
+````
