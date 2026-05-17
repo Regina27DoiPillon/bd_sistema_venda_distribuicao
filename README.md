@@ -3728,7 +3728,26 @@ DELIMITER ;
 select ProductID, fn_verificar_estoque(UnitsInStock) as estado_estoque from Products;
 
 ````
+### Atividade 3 — Function para Categoria do Produto
+````
 
+USE wrpracti_northwind;
+
+DELIMITER $$
+create function fn_categoria_produto(id_produto int)
+returns varchar(250)
+deterministic 
+begin
+return (select c.CategoryName from Categories c inner join Products p on p.CategoryID = c.CategoryID where p.ProductID = id_produto);
+end $$
+DELIMITER ;
+
+````
+````
+
+select p.ProductID, fn_categoria_produto(p.ProductID) as categoria from Products p order by p.ProductID;
+
+````
 ### Atividade 4 — Function para Calcular Frete Grátis
 ````
 
