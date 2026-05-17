@@ -3815,3 +3815,13 @@ DELIMITER ;
 select OrderID, fn_tempo_entrega(RequiredDate, ShippedDate) as diasparaEntrega from Orders;
 
 ````
+### Atividade 7 — Dashboard SQL
+````
+
+select o.OrderID as idPedido, c.ContactName as NomeComprador, fn_nivel_cliente(sum(od.Quantity)) as NivelCliente, p.ProductName as OquefoiPedido, 
+fn_total_pedido(od.UnitPrice, od.Quantity) as TotalPedido, fn_frete_gratis(fn_total_pedido(od.UnitPrice, od.Quantity)) as Frete, 
+fn_tempo_entrega(o.RequiredDate, o.ShippedDate) as DiasEntrega  from Orders o inner join Customers c on o.CustomerID = c.CustomerID inner join OrderDetails od
+on od.OrderID = o.OrderID inner join Products p on p.ProductID = od.ProductID group by o.OrderID, c.ContactName, p.ProductName, od.UnitPrice,
+od.Quantity, o.RequiredDate, o.ShippedDate;
+
+````
