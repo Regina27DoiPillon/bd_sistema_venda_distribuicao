@@ -10,7 +10,7 @@ Banco de Dados sobre Sistema de Vendas e Distribuição.
 ````
 
 CREATE database wrpracti_northwind;
-USE wrpracti_nortwind;
+USE wrpracti_northwind;
 
 ````
 ### Categorias:
@@ -3736,8 +3736,6 @@ from Products;
 ````
 ### Atividade 3 — Function para Categoria do Produto
 ````
-
-USE wrpracti_northwind;
 
 DELIMITER $$
 create function fn_categoria_produto(id_produto int)
