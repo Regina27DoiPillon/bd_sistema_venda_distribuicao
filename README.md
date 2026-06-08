@@ -3688,48 +3688,62 @@ from Products;
 ### Atividade 3 — Function para Categoria do Produto
 ````
 
+use wrpracti_northwind;
+
 DELIMITER $$
 create function fn_categoria_produto(id_produto int)
 returns varchar(250)
 deterministic 
 begin
-return (select c.CategoryName from Categories c inner join Products p on p.CategoryID = c.CategoryID where p.ProductID = id_produto);
+return (
+	select c.CategoryName 
+	from Categories c 
+	inner join Products p 
+	on p.CategoryID = c.CategoryID 
+	where p.ProductID = id_produto);
 end $$
 DELIMITER ;
 
+
 ````
 ````
 
+USE wrpracti_northwind;
+
 select
-p.ProductID,
-fn_categoria_produto(p.ProductID) as categoria
-from Products p
-order by p.ProductID;
+ProductID,
+fn_categoria_produto(ProductID) as categoria
+from Products
+order by ProductID;
+
 
 ````
 ### Atividade 4 — Function para Calcular Frete Grátis
 ````
 
+use wrpracti_northwind;
 DELIMITER $$
 
 create function fn_frete_gratis(total_compra decimal (10,4))
 returns varchar(250)
 deterministic
 begin
-if total_compra >= 500 then
-return "FRETE GRÁTIS";
-else
-return "FRETE COBRADO";
-end if;
+	if total_compra >= 500 then
+		return "FRETE GRÁTIS";
+		else
+		return "FRETE COBRADO";
+	end if;
 end $$
+
 DELIMITER ;
 
 ````
 ````
 
+USE wrpracti_northwind;
 select
 od.orderID,
-fn_frete_gratis(fn_total_pedido(od.UnitPrice, od.Quantity)) as tipo_frete
+fn_frete_gratis(fn_total_pedido(o.OrderID)) as tipo_frete
 from Orders o
 inner join OrderDetails od
 on o.orderID = od.orderID;
