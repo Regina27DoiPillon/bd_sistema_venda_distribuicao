@@ -3787,20 +3787,28 @@ group by c.CustomerID;
 ### Atividade 6 — Function para Tempo de Entrega
 ````
 
+USE wrpracti_northwind;
 DELIMITER $$
-create function fn_tempo_entrega(prazodata datetime, saidaData datetime)
+create function fn_tempo_entrega(ordem_id int)
 returns int
 deterministic
 begin
-return datediff(prazodata , saidaData);
+	declare tempo int;
+    select datediff(RequiredDate, ShippedDate) 
+    into tempo 
+    from Orders
+    where OrderID = ordem_id;
+	return tempo;
 end $$
 DELIMITER ;
 
 ````
 ````
+USE wrpracti_northwind;
+
 select
 OrderID,
-fn_tempo_entrega(RequiredDate, ShippedDate) as diasparaEntrega
+fn_tempo_entrega(OrderID) as diasparaEntrega
 from Orders;
 
 ````
