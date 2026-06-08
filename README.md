@@ -3856,3 +3856,84 @@ o.RequiredDate,
 o.ShippedDate;
 
 ````
+### Atividade 8 — Function de Comissão do Funcionário
+````
+
+use wrpracti_northwind;
+DELIMITER $$
+
+CREATE FUNCTION fn_comissao_funcionario(p_employeeid INT)
+RETURNS VARCHAR(10)
+DETERMINISTIC
+BEGIN
+
+    DECLARE v_total DECIMAL(10,2);
+
+    SELECT SUM(
+	(od.UnitPrice * od.Quantity) - ((od.UnitPrice * od.Quantity) * od.Discount))
+    INTO v_total
+    FROM Orders o
+    INNER JOIN OrderDetails od
+	ON o.OrderID = od.OrderID
+    WHERE o.EmployeeID = p_employeeid;
+    IF v_total > 50000 THEN
+	RETURN '10%';
+    ELSEIF v_total > 20000 THEN
+	RETURN '5%';
+    ELSE
+	RETURN '2%';
+    END IF;
+END $$
+
+DELIMITER ;
+
+````
+````
+
+USE wrpracti_northwind;
+SELECT
+    EmployeeID,
+    FirstName,
+    LastName,
+    fn_comissao_funcionario(EmployeeID) AS Comissao
+FROM Employees;
+
+````
+### Atividade 9 — Produtos Mais Vendidos
+````
+
+delimiter $$
+
+create function fn_status_produto(p_productid INT)
+returns varchar(30)
+deterministic
+
+begin
+
+    declare vendas_total_vendido INT;
+
+    select sum(Quantity)
+    into vendas_total_vendido
+    from  OrderDetails
+    where ProductID = p_productid;
+
+    if vendas_total_vendido >= 500 then
+		return 'MAIS VENDIDO';
+	    else
+		return 'VENDA NORMAL';
+    end if;
+
+end $$
+
+DELIMITER ;
+
+````
+````
+
+select
+    ProductID,
+    ProductName,
+    fn_status_produto(ProductID) AS StatusProduto
+from Products;
+
+````
