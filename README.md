@@ -3753,29 +3753,45 @@ on o.orderID = od.orderID;
 ### Atividade 5 — Function para Nível do Cliente
 ````
 
+use wrpracti_northwind;
+
 DELIMITER $$
-create function fn_nivel_cliente(num_compras int)
+create function fn_nivel_cliente(comprador_id varchar(10))
 returns varchar(250)
 deterministic
 begin
-if num_compras >=100000 then
-return "PREMIUM";
-elseif num_compras <100000 and num_compras >=5000 then
-return "GOLD";
-elseif num_compras <5000 and num_compras >=1000 then
-return "SILVER";
-else
-return "BRONZE";
-end if;
+	declare num_compras int;
+	select sum(od.Quantity) 
+	into num_compras
+    from Customers c
+	 join Orders o
+	on c.CustomerID = o.CustomerID
+	 join OrderDetails od
+	on od.OrderID = o.OrderID
+	where c.CustomerID = comprador_id;
+
+	if num_compras >=100000 then
+		return "PREMIUM";
+		elseif num_compras <100000 and num_compras >=5000 then
+		return "GOLD";
+		elseif num_compras <5000 and num_compras >=1000 then
+		return "SILVER";
+		else
+		return "BRONZE";
+	end if;
 end $$
 DELIMITER ;
 
+
 ````
 ````
 
+USE wrpracti_northwind;
+
+
 select
 c.CustomerID,
-fn_nivel_cliente(sum(od.Quantity)) as nivel_cliente
+fn_nivel_cliente(c.CustomerID) as nivel_cliente
 from Customers c
 inner join Orders o
 on c.CustomerID = o.CustomerID
