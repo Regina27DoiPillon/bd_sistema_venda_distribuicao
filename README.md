@@ -3652,27 +3652,36 @@ fn_total_pedido_desconto(fn_total_pedido(orderID), orderID) as preco_final_comDe
 ### Atividade 2 — Function para verificar estoque
 ````
 
+use wrpracti_northwind;
 DELIMITER $$
 
-create function fn_verificar_estoque(qntdd int)
+create function fn_verificar_estoque(produto_id int)
 returns varchar(250)
 deterministic
 begin
-if qntdd >= 10 then
-	return "ESTOQUE OK";
-else
-	return "ESTOQUE BAIXO";
+	declare qntdd int;
+	select UnitsInStock 
+	into qntdd
+	from  Products 
+    where ProductID = produto_id;
+    
+	if qntdd >= 10 then
+		return "ESTOQUE OK";
+	else
+		return "ESTOQUE BAIXO";
 end if;
 end $$
 
 DELIMITER ;
 
+
 ````
 ````
 
+USE wrpracti_northwind;
 select
 ProductID,
-fn_verificar_estoque(UnitsInStock) as estado_estoque
+fn_verificar_estoque(ProductID) as estado_estoque
 from Products;
 
 ````
