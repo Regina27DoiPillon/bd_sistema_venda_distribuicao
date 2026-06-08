@@ -3831,6 +3831,7 @@ from Orders;
 ### Atividade 7 — Dashboard SQL
 ````
 
+USE wrpracti_northwind;
 select
 o.OrderID as idPedido,
 c.ContactName as NomeComprador,
@@ -3902,6 +3903,7 @@ FROM Employees;
 ### Atividade 9 — Produtos Mais Vendidos
 ````
 
+USE wrpracti_northwind;
 delimiter $$
 
 create function fn_status_produto(p_productid INT)
@@ -3930,6 +3932,7 @@ DELIMITER ;
 ````
 ````
 
+USE wrpracti_northwind;
 select
     ProductID,
     ProductName,
