@@ -3611,31 +3611,41 @@ INSERT INTO `OrderDetails` (`OrderID`, `ProductID`, `UnitPrice`, `Quantity`, `Di
 ### Atividade 1 — Function para calcular valor total do pedido
 ````
 
-DELIMITER $$
-create function fn_total_pedido(preco_uni decimal(10,4), quant int)
-returns decimal (10,4)
-DETERMINISTIC 
-BEGIN
-	return (preco_uni * quant);
-END $$
-DELIMITER ;
-
-DELIMITER $$
-create function fn_total_pedido_desconto(preco decimal(10,4), desconto double)
-returns decimal (10,4)
-DETERMINISTIC 
-BEGIN
-	return preco - preco*(desconto/100);
-END $$
-DELIMITER ;
+use wrpracti_northwind; 
+DELIMITER $$ 
+-- preço total SEM desconto 
+create function fn_total_pedido(ordem_id int) 
+returns decimal (10,4) 
+DETERMINISTIC  
+BEGIN 
+declare total_pedido decimal(10,4); 
+    select sum( UnitPrice * Quantity) into total_pedido 
+    from OrderDetails 
+    where ordem_id=orderID; 
+return total_pedido; 
+END $$ 
+DELIMITER ; 
+  
+-- desconto aplicado 
+DELIMITER $$  
+create function fn_total_pedido_desconto(preco decimal(10,4), ordem_id int) 
+returns decimal (10,4) 
+DETERMINISTIC  
+BEGIN 
+declare preco_com_desconto decimal(10,4); 
+    select sum(preco - preco * (Discount / 100)) into preco_com_desconto 
+    from OrderDetails 
+    where ordem_id = orderID; 
+return preco_com_desconto; 
+END $$ 
+DELIMITER ; 
 
 ````
 ````
 
-select
-orderID,
-fn_total_pedido_desconto(fn_total_pedido(UnitPrice, Quantity), Discount) as preco_final_comDesconto
-from OrderDetails;
+select 
+orderID, 
+fn_total_pedido_desconto(fn_total_pedido(orderID), orderID) as preco_final_comDesconto from OrderDetails;
 
 ````
 
